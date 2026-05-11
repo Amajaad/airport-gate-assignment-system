@@ -1,0 +1,14 @@
+1. Light Scenario (The Timing Bottleneck)
+*   **The Setup**: 3 Small flights (F1, F2, F3) all overlap in the morning, but you only have **2 gates**.
+*   **The Conflict**: One flight will always be unassigned (Slate color in the graph).
+*   **The Solution**: Add **any** gate (Small, Medium, or Large) to see the unassigned flight immediately find a home and the "Gates Assigned" count jump to 3.
+
+2. Moderate Scenario (The Size Bottleneck)
+*   **The Setup**: Contains 2 **Large** aircraft (F1, F2), but the airport starts with **zero Large gates**.
+*   **The Conflict**: F1 and F2 will be unassigned from the start, regardless of how many Small/Medium gates you have.
+*   **The Solution**: Add a **Large** gate. You will see one Large flight get assigned. Add a second Large gate to solve the scenario completely.
+
+### 3. Peak Scenario (The Resource Crunch)
+*   **The Setup**: A dense bank of 8 flights with tight overlaps across all sizes, supported by only **4 gates**.
+*   **The Conflict**: The airport is at absolute maximum capacity.
+*   **The Challenge**: If you **delete even one gate**, you will see a cascade of flights lose their assignments. This is perfect for testing the "Remove Gate" functionality.

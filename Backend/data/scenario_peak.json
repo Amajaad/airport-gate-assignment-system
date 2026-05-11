@@ -1,0 +1,20 @@
+﻿{
+  "scenario": "peak_traffic",
+  "description": "Extreme Stress: 8 flights with heavy overlaps and tight size constraints. Removing even one gate will cause a cascade of unassigned flights.",
+  "gates": [
+    { "id": "G1", "size": "large", "compatible_aircraft": ["large"] },
+    { "id": "G2", "size": "medium", "compatible_aircraft": ["medium"] },
+    { "id": "G3", "size": "medium", "compatible_aircraft": ["medium"] },
+    { "id": "G4", "size": "small", "compatible_aircraft": ["small"] }
+  ],
+  "flights": [
+    { "id": "F1", "arrival": "05:00", "departure": "07:00", "aircraft_size": "large", "active": true },
+    { "id": "F2", "arrival": "05:30", "departure": "07:30", "aircraft_size": "medium", "active": true },
+    { "id": "F3", "arrival": "06:00", "departure": "08:00", "aircraft_size": "small", "active": true },
+    { "id": "F4", "arrival": "06:30", "departure": "08:30", "aircraft_size": "medium", "active": true },
+    { "id": "F5", "arrival": "07:00", "departure": "09:00", "aircraft_size": "large", "active": true },
+    { "id": "F6", "arrival": "07:30", "departure": "09:30", "aircraft_size": "medium", "active": true },
+    { "id": "F7", "arrival": "08:00", "departure": "10:00", "aircraft_size": "small", "active": true },
+    { "id": "F8", "arrival": "08:30", "departure": "10:30", "aircraft_size": "medium", "active": true }
+  ]
+}

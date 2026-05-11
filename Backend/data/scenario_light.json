@@ -1,0 +1,14 @@
+﻿{
+  "scenario": "light_traffic",
+  "description": "Timing Bottleneck: 3 small flights overlap, but only 2 gates exist. Adding a 3rd gate is required to solve.",
+  "gates": [
+    { "id": "G1", "size": "small", "compatible_aircraft": ["small"] },
+    { "id": "G2", "size": "small", "compatible_aircraft": ["small"] },
+    { "id": "G3", "size": "small", "compatible_aircraft": ["small"] }
+  ],
+  "flights": [
+    { "id": "F1", "airline": "AnadoluJet", "arrival": "08:00", "departure": "10:00", "aircraft_size": "small", "active": true },
+    { "id": "F2", "airline": "Pegasus", "arrival": "08:30", "departure": "10:30", "aircraft_size": "small", "active": true },
+    { "id": "F3", "airline": "SunExpress", "arrival": "09:00", "departure": "11:00", "aircraft_size": "small", "active": true }
+  ]
+}

@@ -1,0 +1,47 @@
+import React, { useEffect, useRef } from 'react';
+import cytoscape from 'cytoscape';
+import { useStore } from '../store/useStore';
+
+const ConflictGraph = () => {
+  const cyRef = useRef(null);
+  const { graphData, assignments } = useStore();
+
+  useEffect(() => {
+    if (!graphData) return;
+
+    const elements = [
+      ...graphData.nodes.map(n => ({
+        data: { id: n.id, label: n.id, gate: assignments[n.id] }
+      })),
+      ...graphData.edges.map(e => ({
+        data: { source: e.source, target: e.target }
+      }))
+    ];
+
+    cytoscape({
+      container: cyRef.current,
+      elements: elements,
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(label)',
+            'background-color': '#666', // We'll map colors below
+            'color': '#fff',
+            'text-valign': 'center',
+            'width': 40, 'height': 40
+          }
+        },
+        {
+          selector: 'edge',
+          style: { 'width': 2, 'line-color': '#ccc' }
+        }
+      ],
+      layout: { name: 'cose', padding: 10 }
+    });
+  }, [graphData, assignments]);
+
+  return <div ref={cyRef} className="w-full h-[400px] border bg-gray-50 rounded" />;
+};
+
+export default ConflictGraph;

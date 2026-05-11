@@ -1,0 +1,53 @@
+﻿{
+  "scenario": "moderate_traffic",
+  "description": "Size Bottleneck: Contains Large aircraft but NO Large gates. Adding a Large gate is the only way to assign them.",
+  "gates": [
+    {
+      "id": "G1",
+      "size": "medium",
+      "compatible_aircraft": ["medium"]
+    },
+    {
+      "id": "G2",
+      "size": "medium",
+      "compatible_aircraft": ["medium"]
+    },
+    { "id": "G3", "size": "small", "compatible_aircraft": ["small"] },
+    { "id": "G4", "size": "large", "compatible_aircraft": ["large"] },
+    { "id": "G5", "size": "large", "compatible_aircraft": ["large"] }
+  ],
+  "flights": [
+    {
+      "id": "F1",
+      "airline": "Turkish Airlines",
+      "arrival": "06:00",
+      "departure": "09:00",
+      "aircraft_size": "large",
+      "active": true
+    },
+    {
+      "id": "F2",
+      "airline": "Turkish Airlines",
+      "arrival": "10:00",
+      "departure": "13:00",
+      "aircraft_size": "large",
+      "active": true
+    },
+    {
+      "id": "F3",
+      "airline": "Pegasus",
+      "arrival": "07:00",
+      "departure": "09:00",
+      "aircraft_size": "medium",
+      "active": true
+    },
+    {
+      "id": "F4",
+      "airline": "SunExpress",
+      "arrival": "08:00",
+      "departure": "10:00",
+      "aircraft_size": "small",
+      "active": true
+    }
+  ]
+}

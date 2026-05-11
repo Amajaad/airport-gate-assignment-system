@@ -1,0 +1,169 @@
+{
+  "scenario": "high_pressure_morning_wave",
+  "description": "Dense morning bank at a mid-sized international airport. Six gates with strict size tiers, 12 flights compressed into a 6-hour window, 15-minute mandatory turnaround buffer. Four large-aircraft slots competing for 2 gates, mixed-size gate G4 creates cross-tier competition, and a simultaneous peak between 07:20–10:30 where 5–7 flights occupy gates concurrently. Expected chromatic number: 5.",
+  "turnaround_buffer_minutes": 15,
+  "gates": [
+    {
+      "id": "G1",
+      "size": "large",
+      "terminal": "A",
+      "compatible_aircraft": ["large"]
+    },
+    {
+      "id": "G2",
+      "size": "large",
+      "terminal": "A",
+      "compatible_aircraft": ["large"]
+    },
+    {
+      "id": "G3",
+      "size": "medium",
+      "terminal": "B",
+      "compatible_aircraft": ["medium"]
+    },
+    {
+      "id": "G4",
+      "size": "medium",
+      "terminal": "B",
+      "compatible_aircraft": ["medium"]
+    },
+    {
+      "id": "G5",
+      "size": "small",
+      "terminal": "C",
+      "compatible_aircraft": ["small"]
+    },
+    {
+      "id": "G6",
+      "size": "small",
+      "terminal": "C",
+      "compatible_aircraft": ["small"]
+    },
+    {
+      "id": "G7",
+      "size": "medium",
+      "terminal": "C",
+      "compatible_aircraft": ["medium"]
+    }
+  ],
+  "flights": [
+    {
+      "id": "F1",
+      "airline": "Turkish Airlines",
+      "arrival": "06:00",
+      "departure": "07:30",
+      "aircraft_size": "large",
+      "active": true
+    },
+    {
+      "id": "F2",
+      "airline": "Pegasus",
+      "arrival": "06:15",
+      "departure": "08:45",
+      "aircraft_size": "medium",
+      "active": true
+    },
+    {
+      "id": "F3",
+      "airline": "SunExpress",
+      "arrival": "06:30",
+      "departure": "08:00",
+      "aircraft_size": "small",
+      "active": true
+    },
+    {
+      "id": "F4",
+      "airline": "Turkish Airlines",
+      "arrival": "07:20",
+      "departure": "09:30",
+      "aircraft_size": "large",
+      "active": true
+    },
+    {
+      "id": "F5",
+      "airline": "AnadoluJet",
+      "arrival": "07:45",
+      "departure": "09:00",
+      "aircraft_size": "medium",
+      "active": true
+    },
+    {
+      "id": "F6",
+      "airline": "Pegasus",
+      "arrival": "08:00",
+      "departure": "10:15",
+      "aircraft_size": "medium",
+      "active": true
+    },
+    {
+      "id": "F7",
+      "airline": "SunExpress",
+      "arrival": "08:10",
+      "departure": "09:30",
+      "aircraft_size": "small",
+      "active": true
+    },
+    {
+      "id": "F8",
+      "airline": "Turkish Airlines",
+      "arrival": "09:00",
+      "departure": "11:00",
+      "aircraft_size": "large",
+      "active": true
+    },
+    {
+      "id": "F9",
+      "airline": "AnadoluJet",
+      "arrival": "09:10",
+      "departure": "10:30",
+      "aircraft_size": "medium",
+      "active": true
+    },
+    {
+      "id": "F10",
+      "airline": "Corendon",
+      "arrival": "09:30",
+      "departure": "11:30",
+      "aircraft_size": "small",
+      "active": true
+    },
+    {
+      "id": "F11",
+      "airline": "Turkish Airlines",
+      "arrival": "10:00",
+      "departure": "12:00",
+      "aircraft_size": "large",
+      "active": true
+    },
+    {
+      "id": "F12",
+      "airline": "Pegasus",
+      "arrival": "10:30",
+      "departure": "12:30",
+      "aircraft_size": "medium",
+      "active": true
+    }
+  ],
+  "pressure_points": [
+    {
+      "id": "PP1",
+      "label": "Large gate bottleneck",
+      "description": "F1 departs 07:30, F4 arrives 07:20 — only 10 minutes apart, below the 15-minute buffer. Both need G1 or G2, so they cannot share a gate. All four large flights (F1, F4, F8, F11) must be carefully sequenced across just two gates."
+    },
+    {
+      "id": "PP2",
+      "label": "G4 cross-tier competition",
+      "description": "G4 accepts both medium and small aircraft, making it a contested shared resource. Assigning a medium flight here frees G3 for another medium, but blocks small flights from using it — and small flights only have G5, G6, and G4 available."
+    },
+    {
+      "id": "PP3",
+      "label": "Simultaneous peak 07:20–10:30",
+      "description": "Between 07:20 and 10:30, up to 7 flights are at the gate simultaneously (F2, F4, F5, F6, F7, F8, F9). All 6 gates are occupied with zero slack. Any mis-sequencing in this window cascades."
+    },
+    {
+      "id": "PP4",
+      "label": "Small aircraft squeeze",
+      "description": "F3, F7, and F10 all need small-compatible gates (G4, G5, G6). F3 and F7 overlap (06:30–08:00 vs 08:10–09:30, within buffer), and F10 overlaps F7 — requiring all three small gates if G4 is not available."
+    }
+  ]
+}
