@@ -1,26 +1,32 @@
 ﻿import { useStore } from "../store/useStore";
-
 const ConflictMatrix = () => {
   const { flights, graphData, gates } = useStore();
-
   const activeFlights = flights.filter((f) => f.active);
 
-  // 1. Added a check to ensure data exists before flagging a conflict
   const hasTimingConflict = (id1, id2) => {
     if (!graphData?.edges) return false;
+    // Ensure we compare strings to strings or numbers to numbers
     return graphData.edges.some(
-      (e) => (e.source === id1 && e.target === id2) || (e.source === id2 && e.target === id1)
+      (e) => 
+        (String(e.source) === String(id1) && String(e.target) === String(id2)) ||
+        (String(e.source) === String(id2) && String(e.target) === String(id1))
     );
   };
 
   const hasCompatibilityConflict = (f1, f2) => {
-    if (f1.id === f2.id) return false;
-    // 2. If gates haven't loaded yet, don't assume there's a conflict
-    if (!gates || gates.length === 0) return false;
+    if (f1.id === f2.id || !gates || gates.length === 0) return false;
 
-    const f1Gates = gates.filter((g) => g.compatible_aircraft.includes(f1.aircraft_size)).map((g) => g.id);
-    const f2Gates = gates.filter((g) => g.compatible_aircraft.includes(f2.aircraft_size)).map((g) => g.id);
-    
+    // Get IDs of gates that fit aircraft 1
+    const f1Gates = gates
+      .filter((g) => g.compatible_aircraft.includes(f1.aircraft_size))
+      .map((g) => g.id);
+
+    // Get IDs of gates that fit aircraft 2
+    const f2Gates = gates
+      .filter((g) => g.compatible_aircraft.includes(f2.aircraft_size))
+      .map((g) => g.id);
+
+    // Conflict exists if they share NO gates in common
     const commonGates = f1Gates.filter((gId) => f2Gates.includes(gId));
     return commonGates.length === 0;
   };
@@ -30,11 +36,11 @@ const ConflictMatrix = () => {
       <table className="w-full border-collapse text-[11px]">
         <thead>
           <tr className="bg-slate-50 border-b border-slate-200">
-            <th className="p-3 text-slate-500 font-medium sticky left-0 bg-slate-50 z-10 border-r border-slate-200">
+            <th className="p-3 text-slate-500 font-medium sticky left-0 bg-slate-50 z-10 border-r border-slate-200 text-left">
               Flight
             </th>
             {activeFlights.map((f) => (
-              <th key={f.id} className="p-3 text-slate-700 font-semibold min-w-[55px] text-center border-r border-slate-100 last:border-r-0">
+              <th key={f.id} className="p-3 text-slate-700 font-semibold min-w-[60px] text-center border-r border-slate-100 last:border-r-0">
                 <div className="flex flex-col">
                   <span>{f.id}</span>
                   <span className="text-[9px] font-normal text-slate-400 capitalize">{f.aircraft_size}</span>
@@ -66,16 +72,19 @@ const ConflictMatrix = () => {
                   cellClass += "bg-slate-50 text-slate-300";
                   symbol = "0";
                 } 
-                // Prioritize showing both visually? 
-                // Here we show Timing (Red) over Size (Amber) if both exist.
+                // TIMING CONFLICT (Red)
                 else if (timingConflict) {
                   cellClass += "bg-rose-500 text-white";
                   symbol = "X";
-                } else if (sizeConflict) {
-                  cellClass += "bg-amber-400 text-amber-950";
+                } 
+                // SIZE CONFLICT (Greenish/Teal)
+                else if (sizeConflict) {
+                  cellClass += "bg-teal-500 text-white"; 
                   symbol = "X";
-                } else {
-                  cellClass += "bg-emerald-50 text-emerald-600";
+                } 
+                // COMPATIBLE (Light neutral)
+                else {
+                  cellClass += "bg-white text-slate-300";
                   symbol = "○";
                 }
 
@@ -90,18 +99,19 @@ const ConflictMatrix = () => {
         </tbody>
       </table>
 
-      <div className="p-4 bg-slate-50/50 flex gap-6 text-[10px] border-t border-slate-100">
+      {/* LEGEND */}
+      <div className="p-4 bg-slate-50 flex gap-6 text-[10px] border-t border-slate-100">
         <div className="flex items-center gap-2">
           <span className="bg-rose-500 text-white w-4 h-4 flex items-center justify-center rounded text-[9px] font-bold">X</span>
-          <span className="text-slate-500 font-medium">Timing Conflict</span>
+          <span className="text-slate-500">Timing Conflict</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="bg-amber-400 text-amber-950 w-4 h-4 flex items-center justify-center rounded text-[9px] font-bold">X</span>
-          <span className="text-slate-500 font-medium">Size Conflict</span>
+          <span className="bg-teal-500 text-white w-4 h-4 flex items-center justify-center rounded text-[9px] font-bold">X</span>
+          <span className="text-slate-500">Size Conflict (Greenish)</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-emerald-500 font-bold text-xs">○</span>
-          <span className="text-slate-500 font-medium">Compatible</span>
+          <span className="text-slate-300 font-bold text-xs">○</span>
+          <span className="text-slate-500">No Conflict</span>
         </div>
       </div>
     </div>
