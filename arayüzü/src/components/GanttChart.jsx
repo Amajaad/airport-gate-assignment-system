@@ -19,8 +19,8 @@ const GanttChart = () => {
 
   // --- DYNAMIC HEIGHT CALCULATION ---
   const trackHeight = 40;
-  const headerHeight = 50; // Padding for the timeline header
-  const dynamicHeight = activeFlights.length * trackHeight + headerHeight;
+  const chartPadding = 80; // Space for the dates at the top and bottom margins
+  const dynamicHeight = (activeFlights.length * trackHeight) + chartPadding;
 
   const rows = activeFlights.map((f) => {
     const [startH, startM] = f.arrival.split(":").map(Number);
@@ -79,7 +79,7 @@ const GanttChart = () => {
       <div className="mt-4 flex flex-wrap gap-4 px-2">
         {Object.entries(gateColors).map(([gate, color]) => {
           const g = gates.find((it) => it.id === gate);
-          return (
+          return (  
             <div key={gate} className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></div>
               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
