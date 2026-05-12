@@ -74,15 +74,15 @@ const ConflictMatrix = () => {
                 return (
                   <td
                     key={f2.id}
-                    className={`p-3 text-center transition-colors border-r border-slate-50 last:border-r-0 relative
+                    className={`p-3 text-center transition-colors border-r border-slate-200 last:border-r-0 
                       ${
                         isSelf
-                          ? "bg-slate-50 text-slate-300"
+                          ? "bg-slate-100 text-slate-400"
                           : timingConflict
-                            ? "bg-rose-50 text-white font-bold"
+                            ? "bg-rose-100 text-rose-700 font-bold"
                             : sizeConflict
-                              ? "bg-amber-50 text-white font-bold"
-                              : "bg-emerald-50/30 text-emerald-600/50"
+                              ? "bg-amber-100 text-amber-700 font-bold"
+                              : "bg-emerald-50 text-emerald-600 font-bold"
                       }`}
                   >
                     {isSelf
@@ -92,13 +92,6 @@ const ConflictMatrix = () => {
                         : sizeConflict
                           ? "S"
                           : "○"}
-
-                    {!isSelf && timingConflict && (
-                      <span className="absolute top-0 right-0 w-full h-full opacity-75 bg-rose-400"></span>
-                    )}
-                    {!isSelf && sizeConflict && (
-                      <span className="absolute top-0 right-0 w-full h-full opacity-75 bg-amber-400"></span>
-                    )}
                   </td>
                 );
               })}
@@ -112,10 +105,10 @@ const ConflictMatrix = () => {
           <span className="text-rose-600 font-bold text-xs">✕</span>{" "}
           <span className="text-slate-500">Timing Conflict</span>
         </div>
-        {/* <div className="flex items-center gap-2">
-          <span className="text-amber-600 font-bold text-xs">S</span>{" "}
+        <div className="flex items-center gap-2">
+          <span className="text-amber-600 font-bold text-xs">✕</span>{" "}
           <span className="text-slate-500">Size Conflict (Incompatible)</span>
-        </div>*/}
+        </div>
         <div className="flex items-center gap-2">
           <span className="text-emerald-500 font-bold text-xs">○</span>{" "}
           <span className="text-slate-500">Compatible</span>
