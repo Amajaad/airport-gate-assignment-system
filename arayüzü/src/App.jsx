@@ -85,7 +85,7 @@ export default function App() {
               <button
                 key={option.id}
                 onClick={() => handleScenarioClick(option.id)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm border ${
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm border cursor-pointer ${
                   activeScenario === option.id
                     ? "bg-indigo-600 text-white border-indigo-600 shadow-indigo-100"
                     : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"

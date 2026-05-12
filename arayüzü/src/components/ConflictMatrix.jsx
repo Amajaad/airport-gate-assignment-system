@@ -94,10 +94,10 @@ const ConflictMatrix = () => {
                           : "○"}
 
                     {!isSelf && timingConflict && (
-                      <span className="absolute top-0 right-0 w-1 h-1 bg-rose-400"></span>
+                      <span className="absolute top-0 right-0 w-full h-full opacity-75 bg-rose-400"></span>
                     )}
                     {!isSelf && sizeConflict && (
-                      <span className="absolute top-0 right-0 w-1 h-1 bg-amber-400"></span>
+                      <span className="absolute top-0 right-0 w-full h-full opacity-75 bg-amber-400"></span>
                     )}
                   </td>
                 );
