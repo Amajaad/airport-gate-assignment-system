@@ -97,7 +97,7 @@ const ConflictMatrix = () => {
                         isSelf
                           ? "bg-slate-50 text-slate-300"
                           : timingConflict
-                            ? "bg-rose-50 text-rose-600 font-bold"
+                            ? "bg-rose-50 text-white font-bold"
                             : sizeConflict
                               ? "bg-amber-50 text-white font-bold"
                               : "bg-emerald-50/30 text-white"
