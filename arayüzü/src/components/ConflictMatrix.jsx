@@ -72,20 +72,21 @@ const ConflictMatrix = () => {
                   cellStyles = "bg-slate-50 text-slate-300";
                   symbol = "—";
                 } else if (timingConflict) {
-                  cellStyles = "bg-red-500 text-white font-black"; // High contrast red
+                  cellStyles = "bg-red-500 text-white font-black text-[14px]"; 
                   symbol = "✕";
                 } else if (sizeConflict) {
-                  cellStyles = "bg-amber-400 text-amber-950 font-black"; // High contrast amber
+                  // Switched to a stark Indigo to completely separate from Red
+                  cellStyles = "bg-indigo-600 text-white font-black text-[14px]"; 
                   symbol = "S";
                 } else {
-                  cellStyles = "bg-emerald-50 text-emerald-600 font-medium";
+                  cellStyles = "bg-emerald-50 text-emerald-600 font-bold text-[14px]";
                   symbol = "○";
                 }
 
                 return (
                   <td
                     key={f2.id}
-                    className={`p-3 text-center transition-colors border-r border-slate-100 last:border-r-0 text-[13px] ${cellStyles}`}
+                    className={`p-3 text-center transition-colors border-r border-slate-100 last:border-r-0 ${cellStyles}`}
                   >
                     {symbol}
                   </td>
@@ -99,15 +100,15 @@ const ConflictMatrix = () => {
       {/* Legend */}
       <div className="p-4 bg-slate-50 flex flex-wrap gap-6 text-[11px] border-t border-slate-200">
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 flex items-center justify-center bg-red-500 text-white rounded text-[10px] font-bold">✕</span>
+          <span className="w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded text-[11px] font-black">✕</span>
           <span className="text-slate-600 font-medium">Timing Conflict</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 flex items-center justify-center bg-amber-400 text-amber-950 rounded text-[10px] font-bold">S</span>
+          <span className="w-5 h-5 flex items-center justify-center bg-indigo-600 text-white rounded text-[11px] font-black">S</span>
           <span className="text-slate-600 font-medium">Size Conflict (No Shared Gates)</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 rounded text-[10px] font-bold">○</span>
+          <span className="w-5 h-5 flex items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-200 rounded text-[11px] font-black">○</span>
           <span className="text-slate-600 font-medium">Compatible</span>
         </div>
       </div>
