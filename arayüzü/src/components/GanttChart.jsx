@@ -17,59 +17,39 @@ const GanttChart = () => {
 
   const activeFlights = flights.filter((f) => f.active && assignments[f.id]);
 
+  // --- DYNAMIC HEIGHT CALCULATION ---
+  const trackHeight = 40;
+  const headerHeight = 50; // Padding for the timeline header
+  const dynamicHeight = activeFlights.length * trackHeight + headerHeight;
+
   const rows = activeFlights.map((f) => {
     const [startH, startM] = f.arrival.split(":").map(Number);
     const [endH, endM] = f.departure.split(":").map(Number);
 
-    // We use a fixed date (today) to represent the 24-hour cycle
     const now = new Date();
-    const startDate = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      startH,
-      startM,
-    );
-    const endDate = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      endH,
-      endM,
-    );
+    const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startH, startM);
+    const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endH, endM);
 
     const gateId = assignments[f.id];
     const gateObj = gates.find((g) => g.id === gateId);
     const gateLabel = gateObj ? `${gateId} (${gateObj.size})` : gateId;
 
-    return [
-      f.id,
-      `Flight ${f.id} (${f.aircraft_size})`,
-      gateLabel,
-      startDate,
-      endDate,
-      null,
-      100,
-      null,
-    ];
+    return [f.id, `Flight ${f.id} (${f.aircraft_size})`, gateLabel, startDate, endDate, null, 100, null];
   });
 
   const data = [columns, ...rows];
 
   const options = {
-    height: 450,
+    height: dynamicHeight, // Use calculated height here
     gantt: {
-      trackHeight: 40,
+      trackHeight: trackHeight,
       labelStyle: {
         fontName: "Inter, system-ui, sans-serif",
         fontSize: 12,
         color: "#475569",
       },
       criticalPathEnabled: false,
-      innerGridHorizLine: {
-        stroke: "#f1f5f9",
-        strokeWidth: 1,
-      },
+      innerGridHorizLine: { stroke: "#f1f5f9", strokeWidth: 1 },
       innerGridTrack: { fill: "#ffffff" },
       innerGridDarkTrack: { fill: "#f8fafc" },
     },
@@ -84,28 +64,26 @@ const GanttChart = () => {
   }
 
   return (
-    <div className="w-full bg-white rounded-xl overflow-y-scroll shadow-inner border border-slate-100 p-4 ">
-      <Chart
-        chartType="Gantt"
-        width="100%"
-        height="600px"
-        data={data}
-        options={options}
-      />
+    <div className="w-full bg-white rounded-xl shadow-inner border border-slate-100 p-4">
+
+      <div className="overflow-x-auto">
+        <Chart
+          chartType="Gantt"
+          width="100%"
+          height={`${dynamicHeight}px`} // Pass the dynamic height as a string with px
+          data={data}
+          options={options}
+        />
+      </div>
+      
       <div className="mt-4 flex flex-wrap gap-4 px-2">
         {Object.entries(gateColors).map(([gate, color]) => {
           const g = gates.find((it) => it.id === gate);
           return (
             <div key={gate} className="flex items-center gap-2">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: color }}
-              ></div>
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></div>
               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
-                {gate}{" "}
-                <span className="text-slate-300 font-normal">
-                  ({g?.size || "?"})
-                </span>
+                {gate} <span className="text-slate-300 font-normal">({g?.size || "?"})</span>
               </span>
             </div>
           );
