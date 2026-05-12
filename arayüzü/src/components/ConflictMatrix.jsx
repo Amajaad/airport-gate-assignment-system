@@ -24,7 +24,6 @@ const ConflictMatrix = () => {
       .filter((g) => g.compatible_aircraft.includes(f2.aircraft_size))
       .map((g) => g.id);
 
-    // Check if the intersection of compatible gates is empty
     const commonGates = f1Gates.filter((gId) => f2Gates.includes(gId));
     return commonGates.length === 0;
   };
@@ -33,18 +32,18 @@ const ConflictMatrix = () => {
     <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
       <table className="w-full border-collapse text-[11px]">
         <thead>
-          <tr className="bg-slate-50 border-b border-slate-200">
-            <th className="p-3 text-slate-500 font-medium sticky left-0 bg-slate-50 z-10 border-r border-slate-200">
+          <tr className="bg-slate-100 border-b border-slate-300">
+            <th className="p-3 text-slate-600 font-bold sticky left-0 bg-slate-100 z-20 border-r border-slate-300">
               Flight
             </th>
             {activeFlights.map((f) => (
               <th
                 key={f.id}
-                className="p-3 text-slate-700 font-semibold min-w-[55px] text-center border-r border-slate-100 last:border-r-0"
+                className="p-3 text-slate-700 font-bold min-w-[60px] text-center border-r border-slate-200 last:border-r-0"
               >
                 <div className="flex flex-col">
                   <span>{f.id}</span>
-                  <span className="text-[9px] font-normal text-slate-400 capitalize">
+                  <span className="text-[9px] font-medium text-slate-500 uppercase">
                     {f.aircraft_size}
                   </span>
                 </div>
@@ -56,12 +55,12 @@ const ConflictMatrix = () => {
           {activeFlights.map((f1) => (
             <tr
               key={f1.id}
-              className="border-b border-slate-100 last:border-b-0 group"
+              className="border-b border-slate-200 last:border-b-0 group"
             >
-              <td className="p-3 font-bold text-slate-700 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r border-slate-200">
+              <td className="p-3 font-bold text-slate-700 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r border-slate-300">
                 <div className="flex flex-col">
                   <span>{f1.id}</span>
-                  <span className="text-[9px] font-normal text-slate-400 capitalize">
+                  <span className="text-[9px] font-normal text-slate-400 uppercase">
                     {f1.aircraft_size}
                   </span>
                 </div>
@@ -71,27 +70,30 @@ const ConflictMatrix = () => {
                 const timingConflict = hasTimingConflict(f1.id, f2.id);
                 const sizeConflict = hasCompatibilityConflict(f1, f2);
 
+                // Determine styling based on priority: Self > Timing > Size > Compatible
+                let cellStyles = "bg-white text-slate-400";
+                let symbol = "○";
+
+                if (isSelf) {
+                  cellStyles = "bg-slate-100 text-slate-300";
+                  symbol = "0";
+                } else if (timingConflict) {
+                  cellStyles = "bg-red-600 text-white font-black"; // High contrast red
+                  symbol = "X";
+                } else if (sizeConflict) {
+                  cellStyles = "bg-amber-500 text-white font-black"; // High contrast amber
+                  symbol = "S";
+                } else {
+                  cellStyles = "bg-emerald-50 text-emerald-700 font-bold"; // Soft green for clarity
+                  symbol = "○";
+                }
+
                 return (
                   <td
                     key={f2.id}
-                    className={`p-3 text-center transition-colors border-r border-slate-200 last:border-r-0 
-                      ${
-                        isSelf
-                          ? "bg-slate-100 text-slate-400"
-                          : timingConflict
-                            ? "bg-rose-100 text-rose-700 font-bold"
-                            : sizeConflict
-                              ? "bg-amber-100 text-amber-700 font-bold"
-                              : "bg-emerald-50 text-emerald-600 font-bold"
-                      }`}
+                    className={`p-3 text-center transition-colors border-r border-slate-100 last:border-r-0 text-sm ${cellStyles}`}
                   >
-                    {isSelf
-                      ? "0"
-                      : timingConflict
-                        ? "X"
-                        : sizeConflict
-                          ? "S"
-                          : "○"}
+                    {symbol}
                   </td>
                 );
               })}
@@ -100,23 +102,24 @@ const ConflictMatrix = () => {
         </tbody>
       </table>
 
-      <div className="p-4 bg-slate-50/50 flex gap-6 text-[10px] border-t border-slate-100">
+      {/* Legend Section - Symbols kept as requested, styles improved for visibility */}
+      <div className="p-4 bg-slate-50 flex gap-8 text-[11px] border-t border-slate-200 font-medium">
         <div className="flex items-center gap-2">
-          <span className="text-rose-600 font-bold text-xs">✕</span>{" "}
-          <span className="text-slate-500">Timing Conflict</span>
+          <span className="w-4 h-4 flex items-center justify-center bg-red-600 text-white rounded text-[10px] font-bold">X</span>
+          <span className="text-slate-700">Timing Conflict</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-amber-600 font-bold text-xs">✕</span>{" "}
-          <span className="text-slate-500">Size Conflict (Incompatible)</span>
+          <span className="w-4 h-4 flex items-center justify-center bg-amber-500 text-white rounded text-[10px] font-bold">S</span>
+          <span className="text-slate-700">Size Conflict (Incompatible)</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-emerald-500 font-bold text-xs">○</span>{" "}
-          <span className="text-slate-500">Compatible</span>
+          <span className="w-4 h-4 flex items-center justify-center bg-emerald-50 border border-emerald-200 text-emerald-700 rounded text-[10px] font-bold">○</span>
+          <span className="text-slate-700">Compatible</span>
         </div>
       </div>
 
       {activeFlights.length === 0 && (
-        <div className="p-8 text-center text-slate-400 italic">
+        <div className="p-12 text-center text-slate-400 italic bg-slate-50">
           No active flights to display matrix
         </div>
       )}
