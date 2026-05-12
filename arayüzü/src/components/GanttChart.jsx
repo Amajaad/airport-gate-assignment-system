@@ -84,11 +84,11 @@ const GanttChart = () => {
   }
 
   return (
-    <div className="w-full bg-white rounded-xl overflow-hidden shadow-inner border border-slate-100 p-4">
+    <div className="w-full bg-white rounded-xl overflow-hidden shadow-inner border border-slate-100 p-4 overflow-y-auto">
       <Chart
         chartType="Gantt"
         width="100%"
-        height="450px"
+        height="600px"
         data={data}
         options={options}
       />
